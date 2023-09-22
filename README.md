@@ -4,6 +4,31 @@
 
     # Установка 
 
-1. Склонируйте репозиторий проектаЖ 
+1. Склонируйте репозиторий проекта
 
     git clone https://github.com/AndreySoroko15/chat_test_task
+
+2. Перейдите в каталог проекта 
+
+    cd chat_test_task
+
+3. Установите зависимости через composer
+
+    composer install
+
+4. На основе файла .env.example создайте файл .env
+    
+    DB_DATABASE=chat 
+    DB_USERNAME и DB_PASSWORD в зависимости от тех, что вы используете
+
+5. Сгенерируйте ключ приложения 
+
+    php artisan key:generate
+
+6. Выполните миграцию базы данных 
+
+    php artisan migrate
+
+7. Запустите сервер разработки Laravel 
+
+    php artisan serve
