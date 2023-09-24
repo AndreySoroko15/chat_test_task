@@ -10,7 +10,7 @@
 
 2. Перейдите в каталог проекта 
 
-    cd chat_test_task
+    cd slmax-php-testovoe-zadanie-v2
 
 3. Установите зависимости через composer
 
