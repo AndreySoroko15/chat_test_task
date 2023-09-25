@@ -23,3 +23,4 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/all-messages/{id}', [App\Http\Controllers\MessageController::class, 'index'])->name('allMassages');
 });
 
+Route::get('/get-message', [App\Http\Controllers\MessageController::class, 'getLatestMessage']);

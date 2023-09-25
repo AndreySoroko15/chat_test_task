@@ -8,6 +8,8 @@ $(document).ready(function () {
     e.preventDefault();
     var message = $(this).serializeArray();
     var _token = $("#_token").val();
+
+    // console.log(message);
     $.ajax({
       type: 'POST',
       url: 'http://chat/send-message',
@@ -23,7 +25,7 @@ $(document).ready(function () {
       },
 
       error: function error(_error) {
-        console.log('Error:' + _error);
+        // console.log('Error:' + error);
       }
     });
   });

@@ -5,6 +5,7 @@ $(document).ready(function() {
         let message = $(this).serializeArray();
         let _token = $("#_token").val();
 
+        // console.log(message);
         $.ajax({
             type: 'POST',
             url: 'http://chat/send-message',
@@ -23,7 +24,7 @@ $(document).ready(function() {
                 // console.log(response.message);
             },
             error: function(error) {
-                console.log('Error:' + error);
+                // console.log('Error:' + error);
             }
 
         })

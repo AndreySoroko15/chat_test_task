@@ -10,40 +10,49 @@ class DialogController extends Controller
 {
     private $users = null; 
     private $messages = null;
+    private $currentDialog = null;
+    private $secondDialog = null;
+
 
     public function index($id) {
         $this->users = User::where('id', '!=', auth()->id())->get();
 
-        $currentDialog = Dialog::where('user1_id', '=', auth()->id())
+        if($this->currentDialog === null) {
+            $dialog1 = new Dialog();
+            $dialog1->user1_id = auth()->id();
+            $dialog1->user2_id = $id;
+            $dialog1->save();
+
+            $this->currentDialog = $dialog1;
+        };
+
+        $this->currentDialog = Dialog::where('user1_id', '=', auth()->id())
                                 ->where('user2_id', '=', $id)
                                 ->select('dialog_id')
                                 ->first();
         
-        if($currentDialog === null) {
-            $currentDialog = new Dialog();
-            $currentDialog->user1_id = auth()->id();
-            $currentDialog->user2_id = $id;
-            $currentDialog->save();
-        };
 
         $messagesFor = Message::where('user_id', '=', auth()->id())
-                                ->where('dialog_id', '=', $currentDialog->dialog_id)
+                                ->where('dialog_id', '=', $this->currentDialog->dialog_id)
                                 ->orderBy('created_at', 'asc')
                                 ->get();
 
-        $secondDialog = Dialog::    where('user1_id', '=', $id)
-        ->where('user2_id', '=', auth()->id())
-        ->first();
-        
-        if($secondDialog === null) {
-            $secondDialog = new Dialog();
-            $secondDialog->user1_id = $id;
-            $secondDialog->user2_id = auth()->id();
-            $secondDialog->save();
+                
+        if($this->secondDialog === null) {
+            $dialog2 = new Dialog();
+            $dialog2->user1_id = $id;
+            $dialog2->user2_id = auth()->id();
+            $dialog2->save();
+
+            $this->secondDialog = $dialog2;
         } 
 
+        $this->secondDialog = Dialog::  where('user1_id', '=', $id)
+                                ->where('user2_id', '=', auth()->id())
+                                ->first();
+
         $messagesFrom = Message::where('user_id', '=', $id)
-                                ->where('dialog_id', '=', $secondDialog->dialog_id)
+                                ->where('dialog_id', '=', $this->secondDialog->dialog_id)
                                 ->orderBy('created_at', 'asc')
                                 ->get();
 
@@ -54,7 +63,7 @@ class DialogController extends Controller
         return view('dialog', [
             'users' => $this->users,
             'currentUser' => auth()->id(),
-            'currentDialog' => $currentDialog,
+            'currentDialog' => $this->currentDialog,
             'messages' => $this->messages,
             'userFromDialog' => $userFromDialog,
         ]);
